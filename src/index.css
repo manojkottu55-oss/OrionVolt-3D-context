@@ -1,0 +1,162 @@
+:root {
+  --bg: #0A101E;
+  --bg-card: #131B2E;
+  --text-primary: #E7EAF0;
+  --text-muted: #9AA5B8;
+  --accent-green: #4ADE80;
+  --accent-teal: #2DD4BF;
+  
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* Custom Selection */
+::selection {
+  background-color: rgba(74, 222, 128, 0.3);
+  color: #fff;
+}
+
+/* Custom Scrollbar for non-lenis fallback */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: #1A243D;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Hide cursor if custom cursor is active */
+body.custom-cursor {
+  cursor: none;
+}
+
+a, button {
+  cursor: pointer;
+}
+
+body.custom-cursor a, body.custom-cursor button, body.custom-cursor .magnetic-hover, body.custom-cursor .magnetic-hover * {
+  cursor: none;
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-teal) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Base Layout Classes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section {
+  padding: 8rem 0;
+  position: relative;
+  z-index: 10;
+}
+
+/* Utils */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.gap-4 { gap: 1rem; }
+.gap-8 { gap: 2rem; }
+
+/* Components */
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-teal) 100%);
+  color: var(--bg);
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 0 20px rgba(74, 222, 128, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Scroll Progress Line */
+.scroll-progress-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.05);
+  z-index: 100;
+}
+
+.scroll-progress-line {
+  width: 100%;
+  background: var(--accent-green);
+  box-shadow: 0 0 10px var(--accent-green);
+  transform-origin: top;
+}
+
+/* Hero Section Animations */
+@keyframes spin3d {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
+
+@keyframes shiny-text {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.shiny-text {
+  background: linear-gradient(
+    120deg,
+    var(--text-primary) 40%,
+    var(--accent-green) 50%,
+    var(--text-primary) 60%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shiny-text 3s linear infinite;
+}
