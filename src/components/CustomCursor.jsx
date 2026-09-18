@@ -16,7 +16,12 @@ const CustomCursor = () => {
 
   useEffect(() => {
     // Check if touch device
-    if (('ontouchstart' in window) || (navigator.maxTouchPoints > 0)) {
+    const isTouchDevice = 
+      ('ontouchstart' in window) || 
+      (navigator.maxTouchPoints > 0) || 
+      (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+
+    if (isTouchDevice) {
       return;
     }
     

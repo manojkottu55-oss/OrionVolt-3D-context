@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { motion } from 'framer-motion';
 import { 
@@ -101,8 +101,14 @@ const FeatureCard = ({ icon, title, desc }) => (
 
 const Features = () => {
   const sectionRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
     gsap.fromTo(sectionRef.current.querySelector('.container'), 
       { opacity: 0, y: 50 },
       {
@@ -129,16 +135,17 @@ const Features = () => {
         <MagicBento 
           items={featuresData}
           textAutoHide={false}
-          enableStars={true}
-          enableSpotlight={true}
+          enableStars={!isMobile} // Disable stars on mobile for performance
+          enableSpotlight={!isMobile} // Disable spotlight on mobile
           enableBorderGlow={true}
           enableTilt={false}
           enableMagnetism={false}
           clickEffect={true}
-          spotlightRadius={400}
-          particleCount={12}
+          spotlightRadius={isMobile ? 0 : 400}
+          particleCount={isMobile ? 0 : 12} // Disable particles on mobile
           glowColor="132, 0, 255"
           disableAnimations={false}
+          isMobile={isMobile}
         />
       </div>
     </section>

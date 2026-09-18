@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import LOGO_IMG from '../assets/LOGOO.png';
-import KIOSK_IMG from '../assets/KIOSKIMG.png';
+import KIOSK_VID from '../assets/KIOSKANIM.MOV';
 
 const Hero = () => {
   const containerRef = useRef(null);
@@ -69,7 +69,7 @@ const Hero = () => {
         style={{
           position: 'absolute',
           inset: -50,
-          background: 'radial-gradient(circle at center, rgba(45,212,191,0.05) 0%, rgba(10,16,30,1) 70%)',
+          background: 'radial-gradient(circle at center, rgba(74, 222, 128, 0.08) 0%, rgba(45, 212, 191, 0.03) 30%, #080d17 80%)',
           zIndex: 1,
           x: useTransform(smoothX, [-1, 1], [-10, 10]),
           y: useTransform(smoothY, [-1, 1], [-10, 10]),
@@ -104,7 +104,7 @@ const Hero = () => {
           }}
         >
           <motion.div
-            className="magnetic-hover"
+            className={!isMobile ? "magnetic-hover" : ""}
             style={{
               rotateX: isMobile ? 0 : tiltX,
               rotateY: isMobile ? 0 : tiltY,
@@ -112,7 +112,7 @@ const Hero = () => {
               position: 'relative',
               zIndex: 1
             }}
-            whileHover="hover"
+            whileHover={!isMobile ? "hover" : ""}
             initial="initial"
           >
             {/* Subtle green glow behind kiosk (placed inside to inherit hover) */}
@@ -126,7 +126,8 @@ const Hero = () => {
                 width: '60%',
                 paddingBottom: '60%',
                 background: 'radial-gradient(circle, rgba(74,222,128,0.2) 0%, transparent 70%)',
-                filter: 'blur(30px)',
+                filter: isMobile ? 'blur(15px)' : 'blur(30px)',
+                opacity: isMobile ? 0.5 : 1,
                 pointerEvents: 'none',
                 zIndex: -1
               }}
@@ -139,7 +140,6 @@ const Hero = () => {
             
             <motion.div 
               style={{
-                animation: 'spin3d 15s linear infinite',
                 transformStyle: 'preserve-3d'
               }}
               variants={{
@@ -147,15 +147,20 @@ const Hero = () => {
                 hover: { scale: 1.05 }
               }}
             >
-              <img 
-                src={KIOSK_IMG} 
-                alt="OrionVolt Kiosk" 
+              <video 
+                src={KIOSK_VID} 
+                autoPlay
+                loop
+                muted
+                playsInline
                 style={{
                   maxWidth: '100%',
                   height: 'auto',
                   maxHeight: '70vh',
                   objectFit: 'contain',
-                  filter: 'drop-shadow(0px 20px 30px rgba(0,0,0,0.7))'
+                  filter: 'drop-shadow(0px 20px 30px rgba(0,0,0,0.7))',
+                  mixBlendMode: 'screen', // Helps if the video has a solid black background
+                  borderRadius: '20px'
                 }} 
               />
             </motion.div>
@@ -192,7 +197,7 @@ const Hero = () => {
               animate={{ opacity: 1, filter: 'blur(0px)' }}
               transition={{ duration: 1, ease: 'easeOut' }}
               style={{
-                fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
+                fontSize: 'clamp(2rem, 8vw, 4.5rem)',
                 fontWeight: 800,
                 marginBottom: '1rem',
                 lineHeight: 1.1,
@@ -238,11 +243,11 @@ const Hero = () => {
             display: 'flex',
             justifyContent: 'center',
             position: 'relative',
-            order: 5
+            order: isMobile ? 3 : 5
           }}
         >
           <motion.div
-            className="magnetic-hover"
+            className={!isMobile ? "magnetic-hover" : ""}
             style={{
               x: isMobile ? 0 : logoPullX,
               y: isMobile ? 0 : logoPullY,
@@ -250,7 +255,7 @@ const Hero = () => {
             }}
             animate={{ y: [-15, 15, -15] }}
             transition={{ duration: 5, ease: 'easeInOut', repeat: Infinity, delay: 1 }}
-            whileHover={{ scale: 1.08 }}
+            whileHover={!isMobile ? { scale: 1.08 } : {}}
           >
             {/* Soft glow ring on hover */}
             <motion.div 

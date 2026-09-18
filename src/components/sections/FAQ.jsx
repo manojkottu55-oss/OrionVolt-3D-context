@@ -102,7 +102,7 @@ const FAQ = () => {
   return (
     <section ref={sectionRef} className="section" style={{ minHeight: '80vh' }}>
       <div className="container">
-        <h2 style={{ textAlign: 'center', fontSize: '3rem', marginBottom: '4rem' }}>
+        <h2 style={{ textAlign: 'center', fontSize: 'clamp(2rem, 6vw, 3rem)', marginBottom: '4rem' }}>
           Frequently Asked Questions
         </h2>
         
@@ -112,7 +112,7 @@ const FAQ = () => {
             maxWidth: '700px',
             margin: '0 auto',
             background: 'var(--bg-card)',
-            padding: '2rem 3rem',
+            padding: 'clamp(1.5rem, 5vw, 3rem)',
             borderRadius: '16px',
             boxShadow: '0 10px 30px rgba(0,0,0,0.3)'
           }}

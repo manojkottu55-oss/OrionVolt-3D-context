@@ -21,7 +21,11 @@ function App() {
 
   useEffect(() => {
     // Check if mobile (simplistic check to disable custom cursor on touch)
-    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    const isTouchDevice = 
+      ('ontouchstart' in window) || 
+      (navigator.maxTouchPoints > 0) || 
+      (window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+      
     if (!isTouchDevice) {
       document.body.classList.add('custom-cursor');
     }

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { ArrowRight } from 'lucide-react';
 import MagicRings from '../MagicRings';
@@ -6,8 +6,14 @@ import MagicRings from '../MagicRings';
 const CTA = () => {
   const sectionRef = useRef(null);
   const contentRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
     gsap.fromTo(contentRef.current,
       { opacity: 0, scale: 0.8 },
       {
@@ -20,6 +26,8 @@ const CTA = () => {
         }
       }
     );
+
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   return (
@@ -69,7 +77,7 @@ const CTA = () => {
             marginBottom: '8rem'
           }}
         >
-          <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', marginBottom: '1.5rem' }}>
+          <h2 style={{ fontSize: 'clamp(2rem, 6vw, 4rem)', marginBottom: '1.5rem' }}>
             Experience <span className="text-gradient">OrionVolt</span>
           </h2>
           <p style={{ fontSize: '1.2rem', color: 'var(--text-muted)', marginBottom: '3rem' }}>
@@ -81,6 +89,7 @@ const CTA = () => {
             target="_blank" 
             rel="noopener noreferrer"
             className="btn-primary magnetic-hover"
+            style={{ width: isMobile ? '100%' : 'auto', justifyContent: 'center' }}
           >
             Try OrionVolt Live
             <ArrowRight size={20} />

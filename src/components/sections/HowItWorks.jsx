@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef, useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import gsap from 'gsap';
 
 const StepCard = ({ number, text }) => (
@@ -47,32 +47,45 @@ const HowItWorks = () => {
   const sectionRef = useRef(null);
   const leftColRef = useRef(null);
   const rightColRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [activeTab, setActiveTab] = useState('guest');
 
   useEffect(() => {
-    gsap.fromTo(leftColRef.current, 
-      { opacity: 0, x: -50 },
-      {
-        opacity: 1, x: 0,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 70%',
-          end: 'top 30%',
-          scrub: true
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    // Only animate columns if not mobile to avoid GSAP target missing errors
+    if (window.innerWidth >= 768) {
+      gsap.fromTo(leftColRef.current, 
+        { opacity: 0, x: -50 },
+        {
+          opacity: 1, x: 0,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 70%',
+            end: 'top 30%',
+            scrub: true
+          }
         }
-      }
-    );
-    gsap.fromTo(rightColRef.current, 
-      { opacity: 0, x: 50 },
-      {
-        opacity: 1, x: 0,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 70%',
-          end: 'top 30%',
-          scrub: true
+      );
+      gsap.fromTo(rightColRef.current, 
+        { opacity: 0, x: 50 },
+        {
+          opacity: 1, x: 0,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 70%',
+            end: 'top 30%',
+            scrub: true
+          }
         }
-      }
-    );
+      );
+    }
+
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   const guestSteps = [
@@ -101,33 +114,89 @@ const HowItWorks = () => {
         <h2 style={{ textAlign: 'center', fontSize: '3rem', marginBottom: '4rem' }}>How It Works</h2>
         
         <div style={{ 
-          display: 'grid', 
+          display: isMobile ? 'block' : 'grid', 
           gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
           gap: '4rem' 
         }}>
-          {/* Guest Mode */}
-          <div ref={leftColRef}>
-            <h3 style={{ fontSize: '1.8rem', marginBottom: '2rem', color: 'var(--accent-teal)' }}>
-              Guest Mode
-            </h3>
-            <div>
-              {guestSteps.map((step, i) => (
-                <StepCard key={i} number={i + 1} text={step} />
-              ))}
+          
+          {isMobile && (
+            <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', background: 'var(--bg-card)', padding: '0.5rem', borderRadius: '12px' }}>
+              <button 
+                onClick={() => setActiveTab('guest')}
+                style={{ 
+                  flex: 1, 
+                  padding: '1rem', 
+                  borderRadius: '8px', 
+                  border: 'none', 
+                  background: activeTab === 'guest' ? 'rgba(45, 212, 191, 0.2)' : 'transparent',
+                  color: activeTab === 'guest' ? 'var(--accent-teal)' : 'var(--text-muted)',
+                  fontWeight: 600,
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                Guest Mode
+              </button>
+              <button 
+                onClick={() => setActiveTab('signin')}
+                style={{ 
+                  flex: 1, 
+                  padding: '1rem', 
+                  borderRadius: '8px', 
+                  border: 'none', 
+                  background: activeTab === 'signin' ? 'rgba(74, 222, 128, 0.2)' : 'transparent',
+                  color: activeTab === 'signin' ? 'var(--accent-green)' : 'var(--text-muted)',
+                  fontWeight: 600,
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                Sign-In Mode
+              </button>
             </div>
-          </div>
+          )}
 
-          {/* Sign-In Mode */}
-          <div ref={rightColRef}>
-            <h3 style={{ fontSize: '1.8rem', marginBottom: '2rem', color: 'var(--accent-green)' }}>
-              Sign-In Mode
-            </h3>
-            <div>
-              {signInSteps.map((step, i) => (
-                <StepCard key={i} number={i + 1} text={step} />
-              ))}
-            </div>
-          </div>
+          <AnimatePresence mode="wait">
+            {(!isMobile || activeTab === 'guest') && (
+              <motion.div 
+                key="guest"
+                ref={!isMobile ? leftColRef : null}
+                initial={isMobile ? { opacity: 0, x: -20 } : false}
+                animate={isMobile ? { opacity: 1, x: 0 } : false}
+                exit={isMobile ? { opacity: 0, x: -20 } : false}
+                transition={{ duration: 0.3 }}
+              >
+                <h3 style={{ fontSize: '1.8rem', marginBottom: '2rem', color: 'var(--accent-teal)', display: isMobile ? 'none' : 'block' }}>
+                  Guest Mode
+                </h3>
+                <div>
+                  {guestSteps.map((step, i) => (
+                    <StepCard key={i} number={i + 1} text={step} />
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence mode="wait">
+            {(!isMobile || activeTab === 'signin') && (
+              <motion.div 
+                key="signin"
+                ref={!isMobile ? rightColRef : null}
+                initial={isMobile ? { opacity: 0, x: 20 } : false}
+                animate={isMobile ? { opacity: 1, x: 0 } : false}
+                exit={isMobile ? { opacity: 0, x: 20 } : false}
+                transition={{ duration: 0.3 }}
+              >
+                <h3 style={{ fontSize: '1.8rem', marginBottom: '2rem', color: 'var(--accent-green)', display: isMobile ? 'none' : 'block' }}>
+                  Sign-In Mode
+                </h3>
+                <div>
+                  {signInSteps.map((step, i) => (
+                    <StepCard key={i} number={i + 1} text={step} />
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </section>

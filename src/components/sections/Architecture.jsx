@@ -26,7 +26,7 @@ const Architecture = () => {
   return (
     <section ref={sectionRef} className="section" style={{ minHeight: '80vh' }}>
       <div className="container">
-        <h2 style={{ textAlign: 'center', fontSize: '3rem', marginBottom: '4rem' }}>
+        <h2 style={{ textAlign: 'center', fontSize: 'clamp(2rem, 6vw, 3rem)', marginBottom: '4rem' }}>
           Built on a <span className="text-gradient">Three-Layer Architecture</span>
         </h2>
 
@@ -43,7 +43,7 @@ const Architecture = () => {
           {/* Hardware Layer */}
           <div style={{
             background: 'var(--bg-card)',
-            padding: '2.5rem',
+            padding: 'clamp(1.5rem, 5vw, 2.5rem)',
             borderRadius: '16px',
             borderLeft: '4px solid var(--accent-green)',
             position: 'relative'
@@ -57,7 +57,7 @@ const Architecture = () => {
           {/* Backend Layer */}
           <div style={{
             background: 'var(--bg-card)',
-            padding: '2.5rem',
+            padding: 'clamp(1.5rem, 5vw, 2.5rem)',
             borderRadius: '16px',
             borderLeft: '4px solid var(--accent-teal)'
           }}>
@@ -70,7 +70,7 @@ const Architecture = () => {
           {/* Presentation Layer */}
           <div style={{
             background: 'var(--bg-card)',
-            padding: '2.5rem',
+            padding: 'clamp(1.5rem, 5vw, 2.5rem)',
             borderRadius: '16px',
             borderLeft: '4px solid #fff'
           }}>
@@ -91,10 +91,10 @@ const Architecture = () => {
           {['ESP32', 'MQTT (EMQX Cloud)', 'Node.js', 'Express', 'Supabase', 'React', 'Razorpay UPI', 'Render', 'Vercel'].map((badge, i) => (
             <span key={i} style={{
               background: 'rgba(255,255,255,0.05)',
-              padding: '0.5rem 1rem',
+              padding: '0.75rem 1.25rem',
               borderRadius: '9999px',
-              fontSize: '0.9rem',
-              color: 'var(--text-muted)',
+              fontSize: '0.95rem',
+              color: 'var(--text-primary)',
               border: '1px solid rgba(255,255,255,0.1)'
             }}>
               {badge}
